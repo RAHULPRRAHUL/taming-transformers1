@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+
+# Ignore log files and databases
+*.log
+
+
+
+__pycache__/
+logs/
+segmented_image.png
+taming/__pycache__/
+taming/data/__pycache__/
+taming/models/__pycache__/
+taming/modules/__pycache__/
+taming/modules/diffusionmodules/__pycache__/
+taming/modules/discriminator/__pycache__/
+taming/modules/losses/__pycache__/
+taming/modules/transformer/__pycache__/
+taming/modules/vqvae/__pycache__/
+
