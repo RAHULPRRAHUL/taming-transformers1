@@ -161,9 +161,10 @@ def reconstruction_pipeline(url, size=320):
     return img
 
 
-reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/7bb608381aae4539ba7a/?dl=1', size=384)
+img = reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/7bb608381aae4539ba7a/?dl=1', size=384)
 
-
+output_filename = 'reconstructed_image.png'
+img.save(output_filename)
 
 
 
