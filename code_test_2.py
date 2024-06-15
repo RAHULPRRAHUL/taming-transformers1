@@ -162,19 +162,36 @@ def reconstruction_pipeline(url, size=320):
 
 
 img = reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/7bb608381aae4539ba7a/?dl=1', size=384)
-
-output_filename = 'reconstructed_image.png'
+output_filename = 'reconstructed_image_0.png'
 img.save(output_filename)
 
+img = reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/6f12b330eb564d288d76/?dl=1', size=384)
+output_filename = 'reconstructed_image_1.png'
+img.save(output_filename)
 
+img = reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/8555a959b0a5423cbfd1/?dl=1', size=384)
+output_filename = 'reconstructed_image_2.png'
+img.save(output_filename)
 
+img = reconstruction_pipeline(url='https://heibox.uni-heidelberg.de/f/be6f4ff34e1544109563/?dl=1', size=384)
+output_filename = 'reconstructed_image_3.png'
+img.save(output_filename)
 
+reconstruction_pipeline("https://heibox.uni-heidelberg.de/f/e41f5053cbd34f11a8d5/?dl=1", size=384)
+output_filename = 'reconstructed_image_4.png'
+img.save(output_filename)
 
+reconstruction_pipeline(url='https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iKIWgaiJUtss/v2/1000x-1.jpg', size=384)
+output_filename = 'reconstructed_image_5.png'
+img.save(output_filename)
 
+img = reconstruction_pipeline("https://heibox.uni-heidelberg.de/f/5cfd15de5d104d6fbce4/?dl=1", size=320)
+output_filename = 'reconstructed_image_6.png'
+img.save(output_filename)
 
-
-
-
+img = reconstruction_pipeline("https://heibox.uni-heidelberg.de/f/5cfd15de5d104d6fbce4/?dl=1", size=512)
+output_filename = 'reconstructed_image_7.png'
+img.save(output_filename)
 
 
 
