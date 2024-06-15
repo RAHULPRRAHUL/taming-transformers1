@@ -47,14 +47,18 @@ def show_segmentation(s,filename ):
     s = Image.fromarray(s)
     s.save(filename)
 
-# def show_segmentation(s):
-#     s = s.detach().cpu().numpy().transpose(0,2,3,1)[0,:,:,None,:]
-#     colorize = np.random.RandomState(1).randn(1,1,s.shape[-1],3)
-#     colorize = colorize / colorize.sum(axis=2, keepdims=True)
-#     s = s@colorize
-#     s = s[...,0,:]
-#     s = ((s+1.0)*127.5).clip(0,255).astype(np.uint8)
-#     s = Image.fromarray(s)
-#     display(s)
 filename='segmented_image.png'
 show_segmentation(segmentation,filename)
+
+
+
+
+
+c_code, c_indices = model.encode_to_c(segmentation)
+print("c_code", c_code.shape, c_code.dtype)
+print("c_indices", c_indices.shape, c_indices.dtype)
+assert c_code.shape[2]*c_code.shape[3] == c_indices.shape[0]
+segmentation_rec = model.cond_stage_model.decode(c_code)
+
+filename='segmented_image1.png'
+show_segmentation(torch.softmax(segmentation_rec, dim=1),filename)
