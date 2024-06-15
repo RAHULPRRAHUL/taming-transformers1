@@ -22,4 +22,4 @@ taming/modules/discriminator/__pycache__/
 taming/modules/losses/__pycache__/
 taming/modules/transformer/__pycache__/
 taming/modules/vqvae/__pycache__/
-
+.idea/
