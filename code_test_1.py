@@ -62,3 +62,82 @@ segmentation_rec = model.cond_stage_model.decode(c_code)
 
 filename='segmented_image1.png'
 show_segmentation(torch.softmax(segmentation_rec, dim=1),filename)
+
+
+
+
+def show_image(s,filename):
+  s = s.detach().cpu().numpy().transpose(0,2,3,1)[0]
+  s = ((s+1.0)*127.5).clip(0,255).astype(np.uint8)
+  s = Image.fromarray(s)
+  s.save(filename)
+
+codebook_size = config.model.params.first_stage_config.params.embed_dim
+z_indices_shape = c_indices.shape
+z_code_shape = c_code.shape
+z_indices = torch.randint(codebook_size, z_indices_shape, device=model.device)
+x_sample = model.decode_to_img(z_indices, z_code_shape)
+
+filename='segmented_image2.png'
+show_image(x_sample,filename)
+
+from IPython.display import clear_output
+import time
+
+idx = z_indices
+idx = idx.reshape(z_code_shape[0], z_code_shape[2], z_code_shape[3])
+
+cidx = c_indices
+cidx = cidx.reshape(c_code.shape[0], c_code.shape[2], c_code.shape[3])
+
+temperature = 1.0
+top_k = 100
+update_every = 50
+
+start_t = time.time()
+for i in range(0, z_code_shape[2] - 0):
+    if i <= 8:
+        local_i = i
+    elif z_code_shape[2] - i < 8:
+        local_i = 16 - (z_code_shape[2] - i)
+    else:
+        local_i = 8
+    for j in range(0, z_code_shape[3] - 0):
+        if j <= 8:
+            local_j = j
+        elif z_code_shape[3] - j < 8:
+            local_j = 16 - (z_code_shape[3] - j)
+        else:
+            local_j = 8
+
+        i_start = i - local_i
+        i_end = i_start + 16
+        j_start = j - local_j
+        j_end = j_start + 16
+
+        patch = idx[:, i_start:i_end, j_start:j_end]
+        patch = patch.reshape(patch.shape[0], -1)
+        cpatch = cidx[:, i_start:i_end, j_start:j_end]
+        cpatch = cpatch.reshape(cpatch.shape[0], -1)
+        patch = torch.cat((cpatch, patch), dim=1)
+        logits, _ = model.transformer(patch[:, :-1])
+        logits = logits[:, -256:, :]
+        logits = logits.reshape(z_code_shape[0], 16, 16, -1)
+        logits = logits[:, local_i, local_j, :]
+
+        logits = logits / temperature
+
+        if top_k is not None:
+            logits = model.top_k_logits(logits, top_k)
+
+        probs = torch.nn.functional.softmax(logits, dim=-1)
+        idx[:, i, j] = torch.multinomial(probs, num_samples=1)
+
+        step = i * z_code_shape[3] + j
+        if step % update_every == 0 or step == z_code_shape[2] * z_code_shape[3] - 1:
+            x_sample = model.decode_to_img(idx, z_code_shape)
+            clear_output()
+            print(f"Time: {time.time() - start_t} seconds")
+            print(f"Step: ({i},{j}) | Local: ({local_i},{local_j}) | Crop: ({i_start}:{i_end},{j_start}:{j_end})")
+            filename = 'segmented_image3.png'
+            show_image(x_sample, filename)
