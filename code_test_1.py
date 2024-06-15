@@ -37,15 +37,24 @@ segmentation = torch.tensor(segmentation.transpose(2,0,1)[None]).to(dtype=torch.
 
 
 
-
-def show_segmentation(s):
-    s = s.detach().cpu().numpy().transpose(0,2,3,1)[0,:,:,None,:]
-    colorize = np.random.RandomState(1).randn(1,1,s.shape[-1],3)
+def show_segmentation(s,filename ):
+    s = s.detach().cpu().numpy().transpose(0, 2, 3, 1)[0, :, :, None, :]
+    colorize = np.random.RandomState(1).randn(1, 1, s.shape[-1], 3)
     colorize = colorize / colorize.sum(axis=2, keepdims=True)
-    s = s@colorize
-    s = s[...,0,:]
-    s = ((s+1.0)*127.5).clip(0,255).astype(np.uint8)
+    s = s @ colorize
+    s = s[..., 0, :]
+    s = ((s + 1.0) * 127.5).clip(0, 255).astype(np.uint8)
     s = Image.fromarray(s)
-    display(s)
+    s.save(filename)
 
-show_segmentation(segmentation)
+# def show_segmentation(s):
+#     s = s.detach().cpu().numpy().transpose(0,2,3,1)[0,:,:,None,:]
+#     colorize = np.random.RandomState(1).randn(1,1,s.shape[-1],3)
+#     colorize = colorize / colorize.sum(axis=2, keepdims=True)
+#     s = s@colorize
+#     s = s[...,0,:]
+#     s = ((s+1.0)*127.5).clip(0,255).astype(np.uint8)
+#     s = Image.fromarray(s)
+#     display(s)
+filename='segmented_image.png'
+show_segmentation(segmentation,filename)
