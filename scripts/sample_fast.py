@@ -205,6 +205,7 @@ def load_model(config, ckpt, gpu, eval_mode):
 
 
 if __name__ == "__main__":
+    sys.path.append("/kaggle/working/taming-transformers1/")
     sys.path.append(os.getcwd())
     parser = get_parser()
 
