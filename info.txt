@@ -40,7 +40,11 @@ if celebahq:
 
 
 
+custom data path '/kaggle/temp/taming-transformers1/data/singlefacedata'
 
+train data '/kaggle/temp/taming-transformers1/data/traindata.txt'
+
+test data  '/kaggle/temp/taming-transformers1/data/testdata.txt'
 
 
 
