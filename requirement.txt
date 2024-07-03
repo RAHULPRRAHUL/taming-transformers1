@@ -14,4 +14,5 @@ packaging==21.3
 torch==1.7.1
 torchvision==0.8.2
 torchaudio==0.7.2
+Pillow==9.5.0
 #python 3.8.19

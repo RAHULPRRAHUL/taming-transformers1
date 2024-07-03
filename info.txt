@@ -49,4 +49,10 @@ test data  '/kaggle/temp/taming-transformers1/data/testdata.txt'
 
 
 
+
+
+
 curl -L -o 2021-04-23T18-11-19_celebahq_transformer.zip -C - 'https://app.koofr.net/content/links/6dddf083-40c8-470a-9360-a9dab2a94e96/files/get/2021-04-23T18-11-19_celebahq_transformer.zip?path=%2F2021-04-23T18-11-19_celebahq_transformer&force' #CelebA-HQ
+
+
+
